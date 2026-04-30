@@ -1,0 +1,9 @@
+# .dockerignore — keeps image lean and fast
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.md
+logs/
+target/*.war.original

@@ -1,0 +1,20 @@
+# docker-compose.prod.yml
+# Use with: docker compose -f docker-compose.yml -f docker-compose.prod.yml up
+# On Render/cloud: set all env vars in dashboard, do NOT mount .env
+
+version: "3.9"
+
+services:
+  db:
+    # Don't expose DB port publicly in production
+    ports: []
+    restart: always
+
+  app:
+    restart: always
+    environment:
+      # On Render, DB is often an external managed service
+      # Override DB_URL to point at managed DB host
+      DB_URL: ${RENDER_DB_URL}   # set this in Render's env dashboard
+    # Remove log volume mount in production
+    volumes: []

@@ -1,0 +1,95 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────
+#  Named network — both containers talk here
+# ─────────────────────────────────────────────
+networks:
+  app-network:
+    driver: bridge
+
+# ─────────────────────────────────────────────
+#  Persistent volume — survives container restart
+# ─────────────────────────────────────────────
+volumes:
+  mysql-data:
+    driver: local
+
+services:
+
+  # ────────────────────────────
+  #  MySQL 8 Database Container
+  # ────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: expense_db
+    restart: unless-stopped
+    networks:
+      - app-network
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE:      ${MYSQL_DATABASE}
+      MYSQL_USER:          ${MYSQL_USER}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
+
+    # Force native password auth — fixes MySQL 8 caching_sha2 issues
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --max_connections=200
+      --wait_timeout=600
+      --interactive_timeout=600
+
+    volumes:
+      # Persistent data storage
+      - mysql-data:/var/lib/mysql
+      # Auto-runs on first container creation
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+
+    # ─── Healthcheck ───────────────────────────────────────────────────
+    # Docker will wait until this passes before starting the app
+    # Uses mysqladmin ping — lightweight, reliable
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin", "ping",
+          "-h", "localhost",
+          "-u", "root",
+          "--password=${MYSQL_ROOT_PASSWORD}"
+        ]
+      interval: 10s       # check every 10s
+      timeout: 5s         # fail if no response in 5s
+      retries: 12         # try up to 12 times (= 2 min max wait)
+      start_period: 30s   # give MySQL 30s grace before first check
+
+  # ────────────────────────────
+  #  Tomcat App Container
+  # ────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expense_app
+    restart: unless-stopped
+    networks:
+      - app-network
+
+    ports:
+      - "9090:8080"
+
+    # ─── Critical: app only starts after DB healthcheck passes ─────────
+    depends_on:
+      db:
+        condition: service_healthy
+
+    environment:
+      # Passed into the container — Java reads via System.getenv()
+      DB_URL:      "jdbc:mysql://${DB_HOST}:${DB_PORT}/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&connectTimeout=10000&socketTimeout=60000"
+      DB_USER:     ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+
+    # Optional: mount logs for debugging
+    volumes:
+      - ./logs:/usr/local/tomcat/logs

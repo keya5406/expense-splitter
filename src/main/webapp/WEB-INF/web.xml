@@ -2,7 +2,7 @@
 
     <servlet>
         <servlet-name>HelloServlet</servlet-name>
-        <servlet-class>controller.HelloServlet</servlet-class>
+        <servlet-class>main.java.controller.HelloServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -12,7 +12,7 @@
 
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>controller.RegisterServlet</servlet-class>
+        <servlet-class>main.java.controller.RegisterServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -22,7 +22,7 @@
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>controller.LoginServlet</servlet-class>
+        <servlet-class>main.java.controller.LoginServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -32,7 +32,7 @@
 
     <servlet>
         <servlet-name>CreateGroupServlet</servlet-name>
-        <servlet-class>controller.CreateGroupServlet</servlet-class>
+        <servlet-class>main.java.controller.CreateGroupServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -42,7 +42,7 @@
 
     <servlet>
         <servlet-name>JoinGroupServlet</servlet-name>
-        <servlet-class>controller.JoinGroupServlet</servlet-class>
+        <servlet-class>main.java.controller.JoinGroupServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -52,7 +52,7 @@
 
     <servlet>
         <servlet-name>DashboardServlet</servlet-name>
-        <servlet-class>controller.DashboardServlet</servlet-class>
+        <servlet-class>main.java.controller.DashboardServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -62,7 +62,7 @@
 
     <servlet>
         <servlet-name>GroupDetailsServlet</servlet-name>
-        <servlet-class>controller.GroupDetailsServlet</servlet-class>
+        <servlet-class>main.java.controller.GroupDetailsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -72,7 +72,7 @@
 
     <servlet>
         <servlet-name>AddExpenseServlet</servlet-name>
-        <servlet-class>controller.AddExpenseServlet</servlet-class>
+        <servlet-class>main.java.controller.AddExpenseServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -82,7 +82,7 @@
 
     <servlet>
         <servlet-name>SettleUpServlet</servlet-name>
-        <servlet-class>controller.SettleUpServlet</servlet-class>
+        <servlet-class>main.java.controller.SettleUpServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -92,7 +92,7 @@
 
     <servlet>
         <servlet-name>SettleOneServlet</servlet-name>
-        <servlet-class>controller.SettleOneServlet</servlet-class>
+        <servlet-class>main.java.controller.SettleOneServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -102,11 +102,12 @@
 
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>controller.LogoutServlet</servlet-class>
+        <servlet-class>main.java.controller.LogoutServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+
 </web-app>
