@@ -20,6 +20,8 @@ public class DBConnection {
         String user = System.getenv("DB_USER");
         String pass = System.getenv("DB_PASSWORD");
 
+        System.out.println("ENV DB_URL = " + url);
+
         return DriverManager.getConnection(url, user, pass);
     }
 }
