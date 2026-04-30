@@ -4,7 +4,7 @@
 target/
 build/
 *.class
-*.war
+
 *.ear
 
 # Logs
